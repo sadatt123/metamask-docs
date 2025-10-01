@@ -1,5 +1,6 @@
 ---
 description: Learn how to send an ERC-4337 user operation using Viem.
+keywords: [ERC-4337, send, user operation, smart account]
 ---
 
 import Tabs from "@theme/Tabs";
@@ -87,7 +88,7 @@ export const smartAccount = await toMetaMaskSmartAccount({
   implementation: Implementation.Hybrid,
   deployParams: [account.address, [], [], []],
   deploySalt: "0x",
-  signatory: { account },
+  signer: { account },
 });
 
 export const bundlerClient = createBundlerClient({

@@ -1,6 +1,7 @@
 ---
 description: Learn how to configure the bundler client, paymaster client, and toolkit environment.
 sidebar_label: Configure the toolkit
+keywords: [configure, delegation toolkit, bundler, paymaster, delegator environment]
 ---
 
 import Tabs from "@theme/Tabs";
@@ -9,7 +10,7 @@ import TabItem from "@theme/TabItem";
 # Configure the Delegation Toolkit
 
 The MetaMask Delegation toolkit is highly configurable, providing support for custom [bundlers and paymasters](#configure-the-bundler).
-You can also configure the [toolkit environment](#configure-the-toolkit-environment) to interact with the [Delegation Framework](../concepts/delegation/index.md#delegation-framework).
+You can also configure the [toolkit environment](#optional-configure-the-toolkit-environment) to interact with the [Delegation Framework](../concepts/delegation/index.md#delegation-framework).
 
 ## Prerequisites
 
@@ -103,7 +104,7 @@ const delegatorSmartAccount = await toMetaMaskSmartAccount({
   implementation: Implementation.Hybrid,
   deployParams: [delegatorAccount.address, [], [], []],
   deploySalt: "0x",
-  signatory: { account: delegatorAccount },
+  signer: { account: delegatorAccount },
 });
 
 export delegatorSmartAccount;
@@ -116,7 +117,7 @@ export delegatorSmartAccount;
 See the changelog of the toolkit version you are using (in the left sidebar) for supported chains.
 :::
 
-Alternatively, you can use the [`getDelegatorEnvironment`](../reference/api/delegation.md#getdelegatorenvironment) function to resolve the environment.
+Alternatively, you can use the [`getDelegatorEnvironment`](../reference/delegation/index.md#getdelegatorenvironment) function to resolve the environment.
 This function is especially useful if your delegator is not a smart account when
 creating a [redelegation](../concepts/delegation/index.md#delegation-types).
 
@@ -132,7 +133,7 @@ const environment: DeleGatorEnvironment = getDelegatorEnvironment(11155111);
 
 ### Deploy a custom environment
 
-You can deploy the contracts using any method, but the toolkit provides a convenient [`deployDelegatorEnvironment`](../reference/api/delegation.md#deploydelegatorenvironment) function. This function simplifies deploying the Delegation Framework contracts to your desired EVM chain.
+You can deploy the contracts using any method, but the toolkit provides a convenient [`deployDelegatorEnvironment`](../reference/delegation/index.md#deploydelegatorenvironment) function. This function simplifies deploying the Delegation Framework contracts to your desired EVM chain.
 
 This function requires a Viem [Public Client](https://viem.sh/docs/clients/public.html), [Wallet Client](https://viem.sh/docs/clients/wallet.html), and [Chain](https://viem.sh/docs/glossary/types#chain)
 to deploy the contracts and resolve the `DeleGatorEnvironment`. 
@@ -206,7 +207,7 @@ Once the contracts are deployed, you can use them to override the environment.
 
 ### Override the environment
 
-To override the environment, the toolkit provides an [`overrideDeployedEnvironment`](../reference/api/delegation.md#overridedeployedenvironment) function to resolve
+To override the environment, the toolkit provides an [`overrideDeployedEnvironment`](../reference/delegation/index.md#overridedeployedenvironment) function to resolve
 `DeleGatorEnvironment` with specified contracts for the given chain and contract version. 
 
 ```typescript

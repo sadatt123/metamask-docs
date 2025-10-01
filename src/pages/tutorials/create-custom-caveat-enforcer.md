@@ -3,6 +3,7 @@ title: Create a custom caveat enforcer
 image: 'img/tutorials/tutorials-banners/create-custom-caveat-enforcer.png'
 description: Define custom rules for a delegation by creating, deploying, and applying a custom caveat enforcer.
 tags: [delegation toolkit, caveat enforcer, smart contracts]
+keywords: [delegation toolkit, create, custom, caveat enforcer, smart contracts]
 date: Aug 27, 2025
 author: MetaMask Developer Relations
 ---
@@ -10,9 +11,9 @@ author: MetaMask Developer Relations
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-This tutorial walks you through creating a custom [caveat enforcer](/delegation-toolkit/development/concepts/delegation/caveat-enforcers) and applying it to a [delegation](/delegation-toolkit/concepts/delegation/).
+This tutorial walks you through creating a custom [caveat enforcer](/delegation-toolkit/concepts/delegation/caveat-enforcers) and applying it to a [delegation](/delegation-toolkit/concepts/delegation/).
 
-The MetaMask Delegation Toolkit includes [out-of-the-box caveat enforcers](/delegation-toolkit/reference/caveats) that define rules and restrictions for common use cases.
+The MetaMask Delegation Toolkit includes [out-of-the-box caveat enforcers](/delegation-toolkit/reference/delegation/caveats) that define rules and restrictions for common use cases.
 For more specific control or other use cases, you can create custom caveat enforcers.
 In this tutorial, you'll create and apply a caveat enforcer that only allows a delegation to be redeemed after a specific timestamp.
 
@@ -100,8 +101,7 @@ The Forge CLI will display the address of the deployed caveat enforcer.
 
 ### 4. Apply the caveat enforcer
 
-Specify the address of the deployed `AfterTimestampEnforcer.sol` contract, add it to the caveat builder, and create a delegation.
-Learn more about [applying caveats to a delegation](/delegation-toolkit/development/guides/delegation/restrict-delegation).
+Specify the address of the deployed `AfterTimestampEnforcer.sol` contract, add it to the [caveat builder](/delegation-toolkit/reference/delegation/#createcaveatbuilder), and create a delegation.
 
 The following code snippet uses the custom caveat enforcer to create a delegation granting
 a 1,000,000 wei allowance that becomes spendable one hour after it is created:
@@ -110,7 +110,8 @@ a 1,000,000 wei allowance that becomes spendable one hour after it is created:
 <TabItem value="delegation.ts">
 
 ```typescript
-import { createCaveatBuilder, createDelegation } from '@metamask/delegation-toolkit'
+import { createDelegation, ROOT_AUTHORITY } from '@metamask/delegation-toolkit'
+import { createCaveatBuilder } from '@metamask/delegation-toolkit/utils'
 import { toHex } from 'viem'
 import { delegatorSmartAccount } from './config.ts'
 
@@ -128,11 +129,13 @@ const caveats = caveatBuilder.addCaveat('nativeTokenTransferAmount', 1000000n).a
   terms: toHex(tenAM),
 })
 
-const delegation = createDelegation({
-  to: "DELEGATE_ADDRESS",
-  from: delegatorSmartAccount.address,
-  caveats,
-})
+const delegation: Delegation =  {
+  delegate: "DELEGATE_ADDRESS",
+  delegator: delegatorSmartAccount.address,
+  authority: ROOT_AUTHORITY,
+  caveats: caveats.build(),
+  salt: '0x',
+};
 ```
 
 </TabItem>
@@ -157,7 +160,7 @@ export const delegatorSmartAccount = await toMetaMaskSmartAccount({
   implementation: Implementation.Hybrid,
   deployParams: [account.address, [], [], []],
   deploySalt: '0x',
-  signatory: { account },
+  signer: { account },
 })
 ```
 
@@ -167,4 +170,4 @@ export const delegatorSmartAccount = await toMetaMaskSmartAccount({
 You've successfully created, deployed, and applied a custom caveat enforcer!
 
 For production use cases, you might need to add additional caveats to restrict the delegation further.
-Learn more about [caveat enforcers](/delegation-toolkit/development/concepts/delegation/caveat-enforcers).
+Learn more about [caveat enforcers](/delegation-toolkit/concepts/delegation/caveat-enforcers).

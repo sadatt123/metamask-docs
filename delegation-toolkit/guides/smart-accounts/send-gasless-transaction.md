@@ -1,5 +1,6 @@
 ---
 description: Learn how to send a gasless transaction
+keywords: [send, gasless transaction, smart account, sponsor, paymaster]
 ---
 
 import Tabs from "@theme/Tabs";
@@ -75,7 +76,7 @@ export const smartAccount = await toMetaMaskSmartAccount({
   implementation: Implementation.Hybrid,
   deployParams: [account.address, [], [], []],
   deploySalt: "0x",
-  signatory: { account },
+  signer: { account },
 });
 
 export const bundlerClient = createBundlerClient({
